@@ -6,6 +6,10 @@
     if (window.accessibilityWidgetLoaded) return;
     window.accessibilityWidgetLoaded = true;
     
+    // Получаем base URL автоматически
+    const scriptSrc = document.currentScript?.src;
+    const baseUrl = scriptSrc ? scriptSrc.substring(0, scriptSrc.lastIndexOf('/') + 1) : '';
+    
     // Создаем элементы виджета
     const widgetHTML = `
         <div class="accessibility-widget-container">
@@ -61,9 +65,17 @@
         </div>
     `;
 
-    // Создаем стили
+    // Создаем стили с динамическим URL
     const widgetCSS = `
         <style>
+            @font-face {
+    font-family: 'DyslexicFont';
+    src: url('${baseUrl}dyslexia-hebrew-extended.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
             .accessibility-widget-container {
                 position: fixed;
                 bottom: 20px;
@@ -221,7 +233,7 @@
             }
 
             .accessibility-dyslexic {
-                font-family: 'Comic Sans MS', 'Arial Rounded MT Bold', Arial, sans-serif !important;
+                font-family: 'DyslexicFont', 'Comic Sans MS', 'Arial Rounded MT Bold', Arial, sans-serif !important;
                 letter-spacing: 0.05em !important;
                 line-height: 1.8 !important;
                 font-size: 1.1em !important;
